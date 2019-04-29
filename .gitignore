@@ -1,0 +1,7 @@
+node_modules
+lib
+logs
+proxies/*.yml
+config/*.yml
+clashConfig/*
+
