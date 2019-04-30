@@ -12,8 +12,8 @@
     "@types/node": "^11.13.8"
   },
   "scripts": {
-	"build": "tsc -p tsconfig.json",
-	"start": "node ./bin/index.js start"
+    "build": "tsc -p tsconfig.json",
+    "start": "node ./bin/index.js start"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   "homepage": "https://github.com/kingrong/node-clash#readme",
   "dependencies": {
     "commander": "^2.20.0",
+    "iconv-lite": "^0.4.24",
     "inquirer": "^6.3.1",
     "js-yaml": "^3.13.1"
   }
