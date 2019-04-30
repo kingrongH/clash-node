@@ -26,6 +26,22 @@ export function b64Decode(s: string){
 	let b = Buffer.from(s,'base64');
 	return b.toString('utf8');
 }
+
+//For now only support utf8
+export function urlDecode(str:string){
+	let bytes = [];
+	for(let i=0; i<str.length;i++){
+		if(str[i]==="%"){
+			bytes.push(parseInt(str.substring(i+1,i+3),16));
+			i = i+2;
+		}else{
+			bytes.push(str.charCodeAt(i));
+		}
+	}
+	let buf = Buffer.from(bytes);
+	return buf.toString('utf8');
+}
+
 /**
  * yaml load and dump
  */
