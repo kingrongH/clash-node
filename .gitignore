@@ -5,3 +5,4 @@ proxies/*.yml
 config/*.yml
 clashConfig/*
 test
+src/*.js
