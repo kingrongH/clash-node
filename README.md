@@ -81,6 +81,6 @@ Which is the same as clash's config, see [Dreamacro/clashh](https://github.com/D
 
 ## TODO
 
-* Add ss proxies support
-* Add different support
-* Add proxy control
+* [x] Add ss proxies support
+* [ ] Add proxy control
+* [ ] Add single proxy add function
