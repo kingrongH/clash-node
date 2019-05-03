@@ -1,4 +1,4 @@
-import { subDecode, clashFormat, toYaml, clashConfig, fromYaml } from './decode';
+import { subDecode, clashFormat,ssClashFormat, toYaml, vmessClashConf,ssClashConf, fromYaml } from './decode';
 import * as http from 'http';
 import * as https from 'https';
 import * as fs from 'fs';
@@ -56,7 +56,7 @@ export interface subscribler {
  * @param {string} name of the subscrible
  * @param {string} save path for this subscrible
  * @param {string} subscrible from the url 
- * @param {clashConfig[]} the all configs of this subscribler which initially empty array, 
+ * @param {vmessClashConf[]} the all configs of this subscribler which initially empty array, 
  * 							after updateSub() method executed, the configs will be in here
  */
 
@@ -65,7 +65,7 @@ export class Subscribler implements subscribler{
 	name:string;
 	path:string;
 	url:string;
-	configs:clashConfig[];
+	configs:vmessClashConf[];
 	lastUpdateDate:Date;
 
 	constructor (name:string,path:string,url:string){
@@ -76,12 +76,12 @@ export class Subscribler implements subscribler{
 		this.lastUpdateDate = new Date();
 	}
 
-	private async getData(url:string):Promise<clashConfig[]>{
+	private async getData(url:string):Promise<vmessClashConf[]>{
 		return new Promise(async (resolve, reject)=>{
 			//let data:string = await getRes(url);
 			getRes(url).then((data)=>{
 				let vmessConfigs = subDecode(data);
-				let result:clashConfig[]=[];
+				let result:vmessClashConf[]=[];
 				for(let i=0;i<vmessConfigs.length;i++){
 					result.push(clashFormat(vmessConfigs[i]));
 				}
