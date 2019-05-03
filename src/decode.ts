@@ -178,7 +178,8 @@ interface vmessConf {
 	tls: string
 }
 
-export function clashFormat(inConf: vmessConf):vmessClashConf{
+
+function vmessClashFormat(inConf: vmessConf):vmessClashConf{
 	//a table for refer
 	const table:any = {
 		ps:"name",
@@ -212,20 +213,6 @@ export function clashFormat(inConf: vmessConf):vmessClashConf{
 	return outConf;
 }
 
-/*
- *
-	let obj = {
-		tag:"default",
-		server:"0.0.0.0",
-		server_port:1080,
-		password:'xxxx',
-		method:"chacha20"
-	};
-*/
-
-
-
-
 interface ssConf{
 	[index:string]:string|number;
 	tag:string;
@@ -235,7 +222,7 @@ interface ssConf{
 	method:string;
 }
 
-export function ssClashFormat(inConf:ssConf){
+function ssClashFormat(inConf:ssConf){
 	let outConf:ssClashConf = {
 		name:'default',
 		type:'ss',
@@ -258,4 +245,14 @@ export function ssClashFormat(inConf:ssConf){
 		}
 	}
 	return outConf;
+}
+
+export function clashFormat(inConf: vmessConf|ssConf):vmessClashConf|ssClashConf|null{
+	if(inConf.hasOwnProperty('id')){
+		return vmessClashFormat(inConf as vmessConf);
+	}else if(inConf.hasOwnProperty('server_port')){
+		return ssClashFormat(inConf as ssConf);
+	}else {
+		return null;
+	}
 }

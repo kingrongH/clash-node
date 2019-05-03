@@ -1,8 +1,8 @@
-import { subDecode, clashFormat,ssClashFormat, toYaml, vmessClashConf,ssClashConf, fromYaml } from './decode';
+import { subDecode, clashFormat, toYaml, vmessClashConf,ssClashConf } from './decode';
 import * as http from 'http';
 import * as https from 'https';
 import * as fs from 'fs';
-import { config as globalConfig, updateGlobalConfig }from './config';
+import { config as globalConfig }from './config';
 
 
 async function getRes(url: string):Promise<string>{
@@ -65,7 +65,7 @@ export class Subscribler implements subscribler{
 	name:string;
 	path:string;
 	url:string;
-	configs:vmessClashConf[];
+	configs:vmessClashConf[]|ssClashConf[];
 	lastUpdateDate:Date;
 
 	constructor (name:string,path:string,url:string){
@@ -76,16 +76,16 @@ export class Subscribler implements subscribler{
 		this.lastUpdateDate = new Date();
 	}
 
-	private async getData(url:string):Promise<vmessClashConf[]>{
+	private async getData(url:string):Promise<vmessClashConf[]|ssClashConf[]>{
 		return new Promise(async (resolve, reject)=>{
 			//let data:string = await getRes(url);
 			getRes(url).then((data)=>{
-				let vmessConfigs = subDecode(data);
-				let result:vmessClashConf[]=[];
-				for(let i=0;i<vmessConfigs.length;i++){
-					result.push(clashFormat(vmessConfigs[i]));
+				let configs = subDecode(data);
+				let result=[];
+				for(let i=0;i<configs.length;i++){
+					result.push(clashFormat(configs[i]));
 				}
-				resolve(result);
+				resolve(result as vmessClashConf[] | ssClashConf[]);
 			}).catch((err)=>{
 				reject(new Error(`Error occured at getData():\n ${err.message}`));
 			});
