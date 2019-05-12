@@ -53,6 +53,9 @@ export function getClashPid():Promise<string>{
 		let grep = spawn('grep',['clash']);
 		let grepString:string = '';
 		
+		ps.on('error',(err)=>{
+			reject(new Error(`can't start child process ps: ${err.message}`))
+		})
 		ps.stdout.on('data', (chunk)=>{
 			grep.stdin.write(chunk);
 		});
@@ -67,6 +70,9 @@ export function getClashPid():Promise<string>{
 			grep.stdin.end();
 		});
 
+		grep.on('error',(err)=>{
+			reject(new Error(`can't start child process grep: ${err.message}`))
+		})
 		grep.stdout.on('data',(chunk)=>{
 			grepString = grepString + chunk;
 		});
