@@ -7,7 +7,8 @@
  */
 
 import * as http from 'http';
-import { config as globalConfig } from 'config';
+import { config as globalConfig } from './config';
+import { spawn } from 'child_process';
 
 /**
  * select proxy while clash is running
@@ -39,4 +40,46 @@ export function proxySelect(name:string):Promise<boolean>{
 			reject(new Error(`Error: ${e.message}`));
 		});
 	});
+}
+
+/** 
+ * @return Promise string pid of clash process
+ */
+export function getClashPid():Promise<string>{
+
+	return new Promise((resolve,reject)=>{
+		let ps = spawn('ps',['-e']); 
+
+		let grep = spawn('grep',['clash']);
+		let grepString:string = '';
+		
+		ps.stdout.on('data', (chunk)=>{
+			grep.stdin.write(chunk);
+		});
+		ps.stderr.on('data', (chunk)=>{
+			reject(chunk);
+		});
+		ps.on('close',(code)=>{
+			if(code !== 0){
+				reject(new Error(`ps exit with code ${code}`));
+			}
+			//stop write to grep stdin stream
+			grep.stdin.end();
+		});
+
+		grep.stdout.on('data',(chunk)=>{
+			grepString = grepString + chunk;
+		});
+		grep.stderr.on('data', (chunk)=>{
+			reject(chunk);
+		});
+		grep.on('close',(code)=>{
+			if(code !== code){
+				reject(new Error('grep exit with code ${code}'));
+			}
+			resolve((/([0-9]+).+/.exec(grepString) as RegExpExecArray)[1])
+		});
+
+	});
+	
 }
