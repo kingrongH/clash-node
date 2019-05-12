@@ -87,5 +87,4 @@ export function getClashPid():Promise<string>{
 		});
 
 	});
-	
 }
