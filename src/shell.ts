@@ -1,9 +1,9 @@
 import { config as globalConfig } from './config';
 import  { Command } from 'commander';
-import { spawn } from 'child_process';
 import * as fs from 'fs';
 import { updateAllSub, Subscribler} from './subscrible';
 import * as inquirer  from 'inquirer';
+import { runClash,proxySelect,killClash } from './controller';
 
 
 export function setUpCommand(){
@@ -27,20 +27,12 @@ export function setUpCommand(){
 		.description('Add a new subscrible')
 		.action(addNewSub);
 
+	program
+		.command('stop')
+		.description('Stop all opened clash')
+		.action(killClash);
+
 	program.parse(process.argv);
-}
-
-
-
-//return a clash child_process
-function runClash(){
-	console.log('starting clash');
-	let log = fs.openSync(__dirname+'/../logs/clashLog.log','w');
-	spawn(__dirname+'/../source/clash-linux-amd64',['-d',globalConfig.clashConfigPath],{
-		stdio:['ignore',log,log]
-	});
-	console.log(`clash started at dir ${globalConfig.clashConfigPath}`);
-	console.log(`see the log ${globalConfig.clashConfigPath}`);
 }
 
 

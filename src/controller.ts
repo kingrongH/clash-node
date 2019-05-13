@@ -9,6 +9,7 @@
 import * as http from 'http';
 import { config as globalConfig } from './config';
 import { spawn } from 'child_process';
+import * as fs from 'fs';
 
 /**
  * select proxy while clash is running
@@ -83,8 +84,49 @@ export function getClashPid():Promise<string>{
 			if(code !== code){
 				reject(new Error('grep exit with code ${code}'));
 			}
-			resolve((/([0-9]+).+/.exec(grepString) as RegExpExecArray)[1])
+			//grepString can be empty
+			if(/([0-9]+).+/.test(grepString)){
+				resolve((/([0-9]+).+/.exec(grepString) as RegExpExecArray)[1])
+			}else{
+				resolve('');
+			}
 		});
 
 	});
+}
+
+/**
+ * send SIGTERM to the process, especially used to kill clash
+ */
+export function killProcess(pid:string){
+	let kill = spawn('kill',['-15',pid]);
+	kill.stderr.on('data',(chunk)=>{
+		console.log(`kill error: ${chunk}`);
+	});
+	kill.on('close',(code)=>{
+		if(code !== 0){
+			console.log(`kill exit with code: ${code}`);
+		}
+	});
+}
+
+//return a clash child_process
+export function runClash(){
+	console.log('starting clash');
+	let log = fs.openSync(__dirname+'/../logs/clashLog.log','w');
+	let clash = spawn(__dirname+'/../source/clash-linux-amd64',['-d',globalConfig.clashConfigPath],{
+		stdio:['ignore',log,log],
+		detached:true
+	});
+	clash.unref();
+	console.log(`clash started at dir ${globalConfig.clashConfigPath}`);
+	console.log(`see the log ${globalConfig.clashConfigPath}`);
+}
+
+export async function killClash(){
+	while(await getClashPid() != ''){
+		let pid = await getClashPid();
+		killProcess(pid);
+	}
+	console.log('all clash process were killed');
 }
