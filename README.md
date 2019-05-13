@@ -48,7 +48,7 @@ Run the command below, and then follow the instructions to add a subscrible url 
 
 ```shell
 cd bin
-node index.js addSub
+node clash-node.js addSub
 ```
 It looks like this:
 ![subscrible](https://i.loli.net/2019/04/29/5cc700a248f36.png)
@@ -66,7 +66,7 @@ After update the subscrible from the url, you may want to start using this proxi
 
 ```shell
 cd bin
-node index.js start
+node clash-node.js start
 ```
 
 ## Config
