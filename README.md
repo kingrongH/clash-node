@@ -5,7 +5,9 @@ Clash-node now is fully open source, anyone has any ideas with this repo can con
 
 ## Current version
 
-Current version is 0.1
+Current version is 0.1.1.
+
+**UPDATE:** Update start and stop command
 
 ## Features
 
@@ -82,7 +84,7 @@ Which is the same as clash's config, see [Dreamacro/clashh](https://github.com/D
 ## TODO
 
 * [x] Add ss proxies support
-* [ ] Add proxy control
+* [x] Add proxy control
 * [ ] Add single proxy add function
 * [ ] Different system support
 * [ ] Log system

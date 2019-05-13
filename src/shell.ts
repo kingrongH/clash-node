@@ -9,7 +9,8 @@ import { runClash,proxySelect,killClash } from './controller';
 export function setUpCommand(){
 	let program = new Command();
 	program
-		.version('0.1.0')
+		.version('0.1.1')
+		.description('Update start and stop command');
 
 	//Only command can specify action, the option can't not specify action 
 	program
