@@ -1,2 +1,3 @@
-var setUpCommand = require('../lib/shell');
-setUpCommand.setUpCommand();
+#!/usr/bin/env node
+
+require('../src/index');
