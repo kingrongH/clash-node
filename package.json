@@ -11,9 +11,11 @@
     "@types/js-yaml": "^3.12.1",
     "@types/node": "^11.13.8"
   },
+  "bin":{
+	  "clash-node","./bin/clash-node"
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "start": "node ./bin/index.js start"
+    "build": "tsc -p tsconfig.json"
   },
   "repository": {
     "type": "git",
