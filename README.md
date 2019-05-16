@@ -47,8 +47,7 @@ In this repo dir you can
 Run the command below, and then follow the instructions to add a subscrible url and the proxies from the subscrible
 
 ```shell
-cd bin
-node clash-node.js addSub
+node clash-node addSub
 ```
 It looks like this:
 ![subscrible](https://i.loli.net/2019/04/29/5cc700a248f36.png)
@@ -56,8 +55,7 @@ It looks like this:
 Update the subscrible you have added before by ruuning command below:
 
 ```shell
-cd bin
-node index.js updateSub
+node clash-node updateSub
 ```
 
 ### For run clash
@@ -65,9 +63,17 @@ node index.js updateSub
 After update the subscrible from the url, you may want to start using this proxies now.
 
 ```shell
-cd bin
-node clash-node.js start
+node clash-node start
 ```
+
+### Select a proxy to use
+
+You can change the proxy by change the followling command.
+```shell
+node clash-node selectProxy
+```
+And follow the step to choose the proxy you want to use.
+
 
 ## Config
 
