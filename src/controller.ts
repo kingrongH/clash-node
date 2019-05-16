@@ -18,7 +18,7 @@ import * as fs from 'fs';
  */
 export function proxySelect(name:string):Promise<boolean>{
 	//if not define "external-controller" in globalConfig, use default value in source file
-	let exCon = '127.0.0.1:9090';
+	let exCon = 'http://127.0.0.1:9090';
 	let payload = {
 		name:name
 	};
@@ -31,7 +31,7 @@ export function proxySelect(name:string):Promise<boolean>{
 			method:'PUT'
 		},(res)=>{
 			if(res.statusCode==204){
-				resolve(true);
+				resolve();
 			}else if(res.statusCode==400){
 				reject('Info: failed, no that proxy, check!');
 			}
@@ -40,6 +40,7 @@ export function proxySelect(name:string):Promise<boolean>{
 		req.on("error", (e)=>{
 			reject(new Error(`Error: ${e.message}`));
 		});
+		req.end();
 	});
 }
 
