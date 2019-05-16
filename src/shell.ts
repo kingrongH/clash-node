@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { updateAllSub, Subscribler} from './subscrible';
 import * as inquirer  from 'inquirer';
 import { runClash,proxySelect,killClash } from './controller';
+import { fromYaml } from './decode'
 
 
 export function setUpCommand(){
@@ -32,6 +33,12 @@ export function setUpCommand(){
 		.command('stop')
 		.description('Stop all opened clash')
 		.action(killClash);
+
+	program
+		.command('selectProxy')
+		.alias('sel')
+		.description('Select a proxy to use now')
+		.action(selectProxy);
 
 	program.parse(process.argv);
 }
@@ -89,4 +96,59 @@ async function addNewSub(){
 	await sub.updateSub();
 }
 
+/**
+ * command function for select proxy
+ * TODO:Add support for default proxies--the proxy user added one by one
+ */
 
+export function selectProxy(){
+	//add choices 
+	let choices:any = {};
+	globalConfig.subscribles.forEach((e)=>{
+		let proxies = fromYaml(fs.readFileSync(`${e.path}/${e.name}.yml`,{encoding:'utf8'}));
+		choices[e.name] = proxies;
+	});
+
+	// create inquirer prompt and declare its anwser
+	let pr = inquirer.createPromptModule();
+	let result:Promise<any>;
+	// choices can empty or if only have one
+	if(Object.keys(choices).length === 0){
+		throw new Error('No proxy to be select');
+	}else if(Object.keys(choices).length === 1){
+		result = pr([
+			{
+				type:'list',
+				name:'proxy',
+				choices:Object.values(choices)[0] as string[],
+				message:'Choose one proxy'
+			}
+		])
+	}else{
+		result = pr([
+			{
+				type:'list',
+				name:'group',
+				choices:function(){
+					return Object.keys(choices);
+				},
+				message:'Choose a group:',
+				default:choices[0]
+			},
+			{
+				type:'list',
+				name:'proxy',
+				choices:function (anwser){
+					return choices[anwser['group']];
+				},
+				message:'Choose one proxy'
+			}
+		]);
+	}
+	result.then((anwser)=>{
+		console.log(anwser['proxy']);
+		proxySelect(anwser['proxy']).then(()=>{
+			console.log(`Select proxy successfully! Now using ${anwser['proxy']}`);
+		}).catch(console.log);
+	});
+}
