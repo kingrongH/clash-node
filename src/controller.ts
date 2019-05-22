@@ -17,7 +17,7 @@ import { fromYaml,toYaml } from './decode';
  * @param { string } name of the proxy you wanna select
  * @return Promise
  */
-export function proxySelect(name:string):Promise<boolean>{
+export function proxySelect(name:string):Promise<void>{
 	//if not define "external-controller" in globalConfig, use default value in source file
 	let exCon = 'http://127.0.0.1:9090';
 	let payload = {
@@ -124,8 +124,9 @@ export async function runClash(){
 	clash.unref();
 	// if there is default proxy set, change to that
 	// TODO: This totally need redesign
+	// For now use setTimeout to reach the goal of have default proxy
 	if(globalConfig.defaultProxy){
-		await proxySelect(globalConfig.defaultProxy);
+		setTimeout(()=>{proxySelect(globalConfig.defaultProxy)},300) ;
 	}
 	console.log(`clash started at dir ${globalConfig.clashConfigPath}`);
 	console.log(`see the log ${globalConfig.clashConfigPath}`);
