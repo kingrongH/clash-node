@@ -1,4 +1,4 @@
-import { config as globalConfig } from './config';
+import { config as globalConfig,updateGlobalConfig } from './config';
 import  { Command } from 'commander';
 import * as fs from 'fs';
 import { updateAllSub, Subscribler} from './subscrible';
@@ -145,10 +145,11 @@ export function selectProxy(){
 			}
 		]);
 	}
-	result.then((anwser)=>{
-		console.log(anwser['proxy']);
-		proxySelect(anwser['proxy']).then(()=>{
-			console.log(`Select proxy successfully! Now using ${anwser['proxy']}`);
+	result.then((answer)=>{
+		console.log(answer['proxy']);
+		proxySelect(answer['proxy']).then(()=>{
+			updateGlobalConfig("defaultProxy",answer['proxy']);
+			console.log(`Select proxy successfully! Now using ${answer['proxy']}`);
 		}).catch(console.log);
 	});
 }
