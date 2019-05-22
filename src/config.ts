@@ -34,13 +34,9 @@ export function updateGlobalConfig(item:string, value:any):void{
 	// write config to the file
 	let str = toYaml(config);
 	try{
-		fs.writeFileSync(configFilePath, str);
+		fs.writeFileSync(`${configFilePath}/config.yml`, str);
 	}catch(e){
 		throw(Error(`updateGlobalConfig encounter an error: ${e.message}`));
 	}
 }
 
-//Do request to the clash change the proxy using now
-export function changeProxy(){
-	
-}
