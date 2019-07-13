@@ -12,7 +12,7 @@
     "@types/node": "^11.13.8"
   },
   "bin":{
-	  "clash-node","./bin/clash-node"
+	  "clash-node":"./bin/clash-node"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json"
